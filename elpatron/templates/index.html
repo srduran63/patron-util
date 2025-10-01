@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% block title %}El Patrón 217 Corp - Dealer de Autos{% endblock %} {% block content %}
+<section class="hero-section" aria-label="Bienvenida" style="text-align:center;margin-bottom:32px;">
+    <h1 class="main-title" style="font-family:'Orbitron',sans-serif;font-size:2.5em;color:#e11d48;text-shadow:1px 2px 8px #0008;">
+        ¡Bienvenido a El Patrón 217 Corp!
+    </h1>
+    <p style="font-size:1.2em;color:#fff;">
+        Tu dealer de confianza en autos racing y sport. <br>
+        <b>Encuentra tu próximo auto con nosotros.</b>
+    </p>
+    <a href="#vehicles" class="btn-details" style="margin-top:18px;">Ver Catálogo</a>
+</section>
+
+<section class="vehicles-section" id="vehicles">
+    <h2 style="font-family:'Montserrat',sans-serif;color:#e11d48;font-size:1.5em;margin-bottom:16px;">Autos Disponibles</h2>
+    <div class="vehicles-grid">
+        {% for vehicle in vehicles %}
+        <div class="vehicle-card" data-marca="{{ vehicle.marca }}" data-id="{{ vehicle.id }}" tabindex="0" aria-label="{{ vehicle.marca }} {{ vehicle.modelo }}" role="article">
+            <span class="vehicle-label">{{ vehicle.marca }} {{ vehicle.año }}</span>
+            <div class="vehicle-image-container">
+                <img src="{{ url_for('static', filename='images/' + vehicle.imagen) }}" alt="{{ vehicle.marca }} {{ vehicle.modelo }}" class="vehicle-image" loading="lazy">
+                <div class="vehicle-badges">
+                    <span class="badge year">{{ vehicle.año }}</span>
+                    <span class="badge kilometers">{{ "{:,}".format(vehicle.kilometraje) }} km</span>
+                </div>
+            </div>
+            <div class="vehicle-content">
+                <h2 class="vehicle-title">{{ vehicle.marca }} {{ vehicle.modelo }}</h2>
+                <div class="vehicle-specs">
+                    <span>
+                        {% if vehicle.detalles and vehicle.detalles.motor %}
+                            {{ vehicle.detalles.motor }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </span>
+                    <span>
+                        {% if vehicle.detalles and vehicle.detalles.combustible %}
+                            {{ vehicle.detalles.combustible }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="vehicle-price">
+                    <span class="currency">$</span>
+                    <span class="amount">{{ "{:,.0f}".format(vehicle.precio) }}</span>
+                </div>
+                <div class="vehicle-actions">
+                    <a href="{{ url_for('vehicle_detail', vehicle_id=vehicle.id) }}" class="btn-details">Ver Detalles</a>
+                    <a href="https://wa.me/?text=Me%20interesa%20este%20vehículo:%20{{ vehicle.marca }}%20{{ vehicle.modelo }}" class="btn-whatsapp" target="_blank" aria-label="Contactar por WhatsApp">
+                        <i class="fab fa-whatsapp"></i> Contactar
+                    </a>
+                </div>
+                <div class="vehicle-description">
+                    <p>{{ vehicle.descripcion }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<section id="contacto" style="margin-top:48px;text-align:center;">
+    <h2 style="font-family:'Orbitron',sans-serif;color:#e11d48;">¿Tienes dudas? ¡Contáctanos!</h2>
+    <p style="color:#fff;">Escríbenos por WhatsApp o síguenos en nuestras redes sociales.</p>
+    <div style="margin-top:18px;">
+        <a href="https://wa.me/1XXXXXXXXXX" class="btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="https://www.facebook.com/" class="btn-details" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+        <a href="https://www.instagram.com/" class="btn-details" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+    </div>
+</section>
+{% endblock %}
